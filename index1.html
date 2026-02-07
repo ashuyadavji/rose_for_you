@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Rose For You ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Page common */
+.page {
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+.active {
+    display: flex;
+}
+
+/* Page 1 background */
+#page1 {
+    background: linear-gradient(rgba(255,154,158,0.6), rgba(250,208,196,0.6)),
+                url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Buttons */
+button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+button:hover {
+    background: #ff1e4d;
+}
+
+/* Input */
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    margin-top: 15px;
+    width: 80%;
+    max-width: 300px;
+}
+
+/* Rose animation */
+.rose {
+    font-size: 90px;
+    animation: bloom 2s infinite;
+}
+@keyframes bloom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Page 4 special pulse button */
+#page4 button {
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,77,109,0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(255,77,109,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,77,109,0); }
+}
+
+/* Falling hearts */
+.petals {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.petals span {
+    position: absolute;
+    top: -10%;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120vh) rotate(360deg); opacity: 0.8; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="petals" id="petals"></div>
+
+<!-- Music -->
+<audio id="bgMusic" preload="auto" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <div class="rose">🌹</div>
+    <h1>This Rose Is For You</h1>
+    <h2>Happy Rose Day my wifeyyyyy 💗😘</h2>
+    <p>Someone special wants to say something ❤️</p>
+    <button onclick="nextPage(2)">Open</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <h1>
+        log bolte h pyaar lafzon se hota hai 💞<br>
+        mujhe toh tumhara naam sunte hi ho jaata hai 💕
+    </h1>
+    <p>aapko main pyaar se kya bulata hoon jaanu? ❣️</p>
+    <input type="text" id="name" placeholder="Type here...">
+    <button onclick="saveName()">Next</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <h1 id="greet"></h1>
+    <p>
+        Tumhari ek muskaan  
+        meri saari thakaan mita deti hai 💖
+    </p>
+    <button onclick="nextPage(4)">Tell Me More</button>
+</div>
+
+<!-- PAGE 4 (UPGRADED ❤️🔥) -->
+<div class="page" id="page4">
+    <h1>Ek Aakhri Sawal 💗</h1>
+    <p>
+        Ye rose sirf phool nahi hai 🌹<br>
+        ye mera dil hai 💓<br><br>
+        jo sirf tumhare liye dhadakta hai…
+    </p>
+    <p>
+        apna honey ka baccha ho na aap❣️💯
+    </p>
+    <p>
+        Kya tum ise apna banaogi? 🥺❤️
+    </p>
+    <button onclick="finalPage()">Yes 🌹</button>
+    <button id="noBtn">No 🙈</button>
+
+</div>
+
+<!-- PAGE 5 (MEMORY PAGE 💞) -->
+<div class="page" id="page5">
+    <div class="rose">🌹💗🌹</div>
+    <h1>She Said Yes ❤️</h1>
+    <p>
+        Aaj se ye rose sirf phool nahi…<br>
+        hamari kahani ka pehla page hai 📖
+    </p>
+    <p id="finalName"></p>
+    <p>
+        Tum muskurayi,<br>
+        aur meri duniya complete ho gayi 🌍💞
+    </p>
+</div>
+
+<script>
+let savedName = "";
+
+/* Music autoplay on first click */
+document.addEventListener('click', function playOnce() {
+  const music = document.getElementById('bgMusic');
+  if (music && music.paused) {
+    music.volume = 0.8;
+    music.play().catch(()=>{});
+  }
+  document.removeEventListener('click', playOnce);
+});
+
+function nextPage(num) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + num).classList.add('active');
+}
+
+function saveName() {
+  const name = document.getElementById('name').value.trim();
+  if (!name) {
+    alert("Naam toh likho jaan ❤️");
+    return;
+  }
+  savedName = name;
+  document.getElementById('greet').innerText = "Hey " + name + " 💖";
+  nextPage(3);
+}
+
+function finalPage() {
+  nextPage(5);
+
+  document.getElementById('finalName').innerText =
+    savedName + ", you are my forever 💍❤️";
+
+  // More hearts on final page
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('span');
+    p.innerText = '💖';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.fontSize = 20 + Math.random() * 25 + 'px';
+    p.style.animationDuration = 4 + Math.random() * 4 + 's';
+    document.getElementById('petals').appendChild(p);
+  }
+}
+
+/* Initial hearts */
+const petalBox = document.getElementById('petals');
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('span');
+  p.innerText = '💗';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.fontSize = 20 + Math.random() * 20 + 'px';
+  p.style.animationDuration = 5 + Math.random() * 5 + 's';
+  petalBox.appendChild(p);
+}
+
+
+/* existing JS upar rahega */
+
+// No button fun (bhaag jaata hai 😜)
+const noBtn = document.getElementById('noBtn');
+if (noBtn) {
+  noBtn.addEventListener('mouseover', moveNo);
+  noBtn.addEventListener('touchstart', moveNo);
+}
+function moveNo() {
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = Math.random() * 70 + '%';
+  noBtn.style.top = Math.random() * 70 + '%';
+}
+
+
+</script>
+
+</body>
+</html>
